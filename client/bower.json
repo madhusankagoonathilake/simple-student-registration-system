@@ -1,0 +1,25 @@
+{
+  "name": "simple-student-registration-system",
+  "homepage": "https://github.com/madhusankagoonathilake/simple-student-registration-system",
+  "description": "This is a student registration system developed for Archdiocesan Centre for Sacred Arts & Architecture, Sri Lanka",
+  "main": "index.html",
+  "keywords": [
+    "student registration"
+  ],
+  "authors": [
+    "Madhusanka Goonathilake"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "materialize": "^0.98.0",
+    "angular": "1.6.1"
+  }
+}

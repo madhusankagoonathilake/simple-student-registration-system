@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <!--Import Google Icon Font-->
+        <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <!--Import materialize.css-->
+        <link type="text/css" rel="stylesheet" href="bower_components/materialize/dist/css/materialize.min.css"  media="screen,projection"/>
+        <style type="text/css">
+            .brand-logo {
+                margin-left: 1%;
+            }
+            nav {
+                margin-bottom: 2%;
+            }
+        </style>
+
+        <!--Let browser know website is optimized for mobile-->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <title>Archdiocesan Centre for Sacred Arts & Architecture</title>
+    </head>
+
+    <body ng-app="SimpleStudentRegistrationSystem">
+        <nav>
+            <div class="nav-wrapper blue" ng-controller="LogoutController">
+                <a href="#" class="brand-logo">Archdiocesan Centre for Sacred Arts & Architecture</a>
+                <ul id="nav-mobile" class="right hide-on-med-and-down">
+                    <li><a href="#" ng-click="logout()">Logout</a></li>
+                </ul>
+            </div>
+        </nav>
+
+        <div class="row" ng-controller="LoginController">
+            <form ng-submit="login();" id="loginForm" method="post" class="col l4 m6 s12 offset-l4 offset-m3">
+                <div class="card">
+                    <div class="card-content">
+                        <span class="card-title">User Authentication</span>
+                        <div class="row">
+                            <span ng-bind="message" class="red darken-1 white-text"></span>
+                            <div class="input-field">
+                                <input ng-model="username" id="username" type="text" class="validate" required="required">
+                                <label for="username">Username</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field">
+                                <input ng-model="password" id="password" type="password" class="validate" required="required">
+                                <label for="password">Password</label>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <button type="submit" class="btn green">Login</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!--Import jQuery before materialize.js-->
+        <script type="text/javascript" src="bower_components/jquery/dist/jquery.min.js"></script>
+        <script type="text/javascript" src="bower_components/materialize/dist/js/materialize.min.js"></script>
+        <script type="text/javascript" src="bower_components/angular/angular.min.js"></script>
+        <script type="text/javascript">
+                                    var app = angular.module('SimpleStudentRegistrationSystem', []);
+
+                                    app.controller('LoginController', function ($scope, $http) {
+                                        $scope.login = function () {
+                                            $http({
+                                                method: 'POST',
+                                                url: '../services/user-authentication-service/validate-credentials.php',
+                                                headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+                                                transformRequest: function (obj) {
+                                                    var str = [];
+                                                    for (var p in obj)
+                                                        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+                                                    return str.join("&");
+                                                },
+                                                data: {username: $scope.username, password: $scope.password}
+                                            }).then(function (response) {
+                                                if (response.data.isAuthenticated) {
+                                                    $('#loginForm').hide().get(0).reset();
+                                                }
+                                                Materialize.toast(response.data.message, 4000);
+                                            });
+
+                                        };
+
+                                    });
+                                    
+                                    app.controller('LogoutController', function($scope, $http) {
+                                        $scope.logout = function() {
+                                            $http.get('../services/user-authentication-service/logout.php')
+                                                    .then(function(response) {
+                                                Materialize.toast(response.data.message, 4000);        
+                                            });
+                                            $('#loginForm').show();
+                                        };
+                                    });
+
+        </script>
+    </body>
+</html>
