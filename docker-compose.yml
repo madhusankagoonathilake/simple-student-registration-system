@@ -1,0 +1,15 @@
+version: '2'
+
+services:
+
+    ssrs:
+        image: simple-student-registration-system
+        ports:
+          - "8088:80"
+        networks:
+          - ssrs-net
+          
+networks:
+
+  ssrs-net:
+    driver: bridge
